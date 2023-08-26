@@ -1,15 +1,15 @@
-module City ( City, newC, nameC, distanceC )
-   where
+module City (City, newC, nameC, distanceC) where
 
-import Main
+import Point
 
-data City = Cit String Point deriving (Eq, Show)
+data City = Cit String Point
+    deriving (Eq, Show)
 
 newC :: String -> Point -> City
-newC nombre (Poi x y) = Cit nombre (Poi x y)
+newC nombre punto = Cit nombre punto
 
 nameC :: City -> String
-nameC Cit nombre (Poi x y) = nombre
+nameC (Cit nombre _) = nombre
 
 distanceC :: City -> City -> Float
-distanceC (Cit nombre (Poi x y)) (Cit nombre (Poi z w)) = difP (Poi x y) (Poi z w)
+distanceC (Cit _ punto1) (Cit _ punto2) = difP punto1 punto2
