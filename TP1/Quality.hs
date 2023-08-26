@@ -1,8 +1,12 @@
-module Quality ( Quality, newQ, capacityQ, delayQ )
-   where
+module Quality ( Quality, newQ, capacityQ, delayQ ) where
 
 data Quality = Qua String Int Float deriving (Eq, Show)
 
 newQ :: String -> Int -> Float -> Quality
-capacityQ :: Quality -> Int -- cuantos túneles puede tolerar esta conexión
-delayQ :: Quality -> Float  -- la demora por unidad de distancia que sucede en las conexiones de este canal
+newQ name capacity delay = Qua name capacity delay
+
+capacityQ :: Quality -> Int
+capacityQ (Qua _ capacity _) = capacity
+
+delayQ :: Quality -> Float
+delayQ (Qua _ _ delay) = delay
