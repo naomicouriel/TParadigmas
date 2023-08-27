@@ -4,7 +4,7 @@ module Point ( Point, newP, difP)
 data Point = Poi Int Int deriving (Eq, Show)
 
 newP :: Int -> Int -> Point
-newP x y = Poi x y
+newP = Poi
 
 difP :: Point -> Point -> Float  -- distancia absoluta
 difP (Poi x y) (Poi z w) = norma (Poi (x-z) (y-w))

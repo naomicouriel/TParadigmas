@@ -6,7 +6,7 @@ data City = Cit String Point
     deriving (Eq, Show)
 
 newC :: String -> Point -> City
-newC nombre punto = Cit nombre punto
+newC = Cit
 
 nameC :: City -> String
 nameC (Cit nombre _) = nombre
