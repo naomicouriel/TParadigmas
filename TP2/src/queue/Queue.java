@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Queue {
 
-List<Queue> fila = new ArrayList<>();
+private List<Object> fila = new ArrayList<>();
 
   public boolean isEmpty() {
 		// TODO Auto-generated method stub
@@ -19,18 +19,22 @@ List<Queue> fila = new ArrayList<>();
 
 	public Queue add( Object  cargo ) {
 		// TODO Auto-generated method stub
-	    Queue fila = new Queue();
 		fila.add(cargo);
-		return fila;
+		return this;
 	}
 
 	public Object take() {
     // TODO Auto-generated method stub
-		return null;
+		fila.clear();
+		return this;
 	}
 
 	public Object head() {
 		// TODO Auto-generated method stub
+		if (fila.size() ==0) {
+			return this;
+		}
+		
 		return fila.get(0);
 	}
 
