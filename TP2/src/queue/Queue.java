@@ -5,42 +5,32 @@ import java.util.List;
 
 public class Queue {
 
-private List<Object> fila = new ArrayList<>();
+    private List<Object> fila = new ArrayList<>();
 
-  public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		if (fila.size() == 0) {
-			return true;
-		};
-		{
-			return false;
-		}
-	}
+    public boolean isEmpty() {
+        return fila.isEmpty();
+    }
 
-	public Queue add( Object  cargo ) {
-		// TODO Auto-generated method stub
-		fila.add(cargo);
-		return this;
-	}
+    public Queue add(Object cargo) {
+        fila.add(cargo);
+        return this;
+    }
 
-	public Object take() {
-    // TODO Auto-generated method stub
-		fila.clear();
-		return this;
-	}
+    public Object take() {
+        if (fila.isEmpty()) {
+            throw new Error("Queue is empty");
+        }
+        return fila.remove(0);
+    }
 
-	public Object head() {
-		// TODO Auto-generated method stub
-		if (fila.size() ==0) {
-			return this;
-		}
-		
-		return fila.get(0);
-	}
+    public Object head() {
+        if (fila.isEmpty()) {
+            throw new Error("Queue is empty");
+        }
+        return fila.get(0);
+    }
 
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+    public int size() {
+        return fila.size();
+    }
 }
