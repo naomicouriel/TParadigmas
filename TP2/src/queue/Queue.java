@@ -1,5 +1,4 @@
 package queue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +16,12 @@ public class Queue {
     }
 
     public Object take() {
-        if (fila.isEmpty()) {
-            throw new Error("Queue is empty");
-        }
+        assert !fila.isEmpty() : "Queue is empty";
         return fila.remove(0);
     }
 
     public Object head() {
-        if (fila.isEmpty()) {
-            throw new Error("Queue is empty");
-        }
+        assert !fila.isEmpty() : "Queue is empty";
         return fila.get(0);
     }
 
