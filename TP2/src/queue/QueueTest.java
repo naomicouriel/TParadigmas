@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 public class QueueTest {
 
-private static String ExpectedErrorNotThrown = "Expected Error was not thrown.";
 private static String queueIsEmpty = "Queue is empty";
 private static String element = "Something";
 private static String secondElement = "Second";
@@ -89,10 +87,7 @@ private static String FirstElement = "First";
 
   }
 
-  @Test public void test10CanNotHeadWhenThereAreNoObjectsInTheQueue() {
-    
-    //assertEquals( queueIsEmpty, assertThrows(Error.class, () -> new Queue().head()).getMessage());
- 
+  @Test public void test10CanNotHeadWhenThereAreNoObjectsInTheQueue() { 
     assertThrowsLike(() -> new Queue().head(), queueIsEmpty);
   }
   
@@ -105,5 +100,4 @@ private static String FirstElement = "First";
 	    assertEquals( message, 
 	                  assertThrows( Error.class, executable ).getMessage() );
 	  }
-
 }

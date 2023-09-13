@@ -2,7 +2,6 @@ package queue;
 
 public class QueueEmpty extends QueueElement {
 
-     
     public boolean isEmpty() {
         return true;
     }

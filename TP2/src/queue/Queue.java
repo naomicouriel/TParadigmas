@@ -1,11 +1,7 @@
 
 package queue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Queue {
-	//hacer con listas private List<QueueElement> fila = new ArrayList<>();
     private QueueElement queueElement;
 
     public Queue() {
@@ -22,7 +18,6 @@ public class Queue {
     }
 
     public Object take() {
-        if (isEmpty()) throw new Error("Queue is empty");
         Object removed = queueElement.head();
         queueElement = queueElement.take();
         return removed;
