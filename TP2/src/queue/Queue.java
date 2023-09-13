@@ -1,8 +1,11 @@
 
 package queue;
 
-public class Queue {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Queue {
+	//hacer con listas private List<QueueElement> fila = new ArrayList<>();
     private QueueElement queueElement;
 
     public Queue() {
