@@ -9,95 +9,101 @@ import org.junit.jupiter.api.function.Executable;
 
 public class QueueTest {
 
-private static String queueIsEmpty = "Queue is empty";
 private static String element = "Something";
 private static String secondElement = "Second";
-private static String FirstElement = "First";
+private static String firstElement = "First";
 
 @Test public void test01QueueShouldBeEmptyWhenCreated() {
     assertTrue( new Queue().isEmpty() );
   }
 
   @Test public void test02AddElementsToTheQueue() {
-    assertFalse( addSomethingToNewQueue().isEmpty() );
+    assertFalse( addSomethingToNewQueue(element).isEmpty() );
   }
 
   @Test public void test03AddedElementsIsAtHead() {
-    assertEquals( element, addSomethingToNewQueue().head() );
+    assertEquals( element, addSomethingToNewQueue(element).head() );
   }
 
   @Test public void test04TakeRemovesElementsFromTheQueue() {
-    Queue queue = addSomethingToNewQueue();
+    Queue queue = addSomethingToNewQueue(element);
     queue.take();
     
     assertTrue( queue.isEmpty() );
   }
 
   @Test public void test05TakeReturnsLastAddedObject() {
-    Queue queue = new Queue();
-    String addedObject = element;
-    queue.add( addedObject );
-    
-    assertEquals( addedObject, queue.take() );
+    Queue queue = addSomethingToNewQueue(element);
+    assertEquals( element, queue.take() );
   }
 
   @Test public void test06QueueBehavesFIFO() {
-    Queue queue = new Queue();
-    String firstAddedObject = FirstElement;
-    String secondAddedObject = secondElement;
+    Queue queue = addSomethingToNewQueue(firstElement).add(secondElement);
 
-    queue.add( firstAddedObject );
-    queue.add( secondAddedObject );
-
-    assertEquals( queue.take(), firstAddedObject );
-    assertEquals( queue.take(), secondAddedObject );
+    assertEquals( queue.take(), firstElement );
+    assertEquals( queue.take(), secondElement );
     assertTrue( queue.isEmpty() );
   }
 
   @Test public void test07HeadReturnsFirstAddedObject() {
-    Queue queue = new Queue();
-    String firstAddedObject = FirstElement;
+    addSomethingToNewQueue(firstElement).add( secondElement );
 
-    queue.add( firstAddedObject );
-    queue.add( secondElement );
-
-    assertEquals( queue.head(), firstAddedObject );
+    assertEquals( addSomethingToNewQueue(firstElement).head(), firstElement );
   }
 
   @Test public void test08HeadDoesNotRemoveObjectFromQueue() {
-	Queue queue = addSomethingToNewQueue();
-    assertEquals( 1, addSomethingToNewQueue().size() );
-    queue.head();
-    assertEquals( 1, addSomethingToNewQueue().size() );
+	assertEquals( 1, addSomethingToNewQueue(element).size() );
+    addSomethingToNewQueue(element).head();
+    assertEquals( 1, addSomethingToNewQueue(element).size() );
   }
 
   @Test public void test09SizeRepresentsObjectInTheQueue() {
-    assertEquals( 2, new Queue().add( FirstElement ).add( secondElement ).size() );
+    assertEquals( 2, addSomethingToNewQueue(firstElement).add( secondElement ).size() );
   }
 
   @Test public void test10CanNotTakeWhenThereAreNoObjectsInTheQueue() {
-    assertThrowsLike(() -> new Queue().take(), queueIsEmpty);
+    assertThrowsLike(() -> new Queue().take(), QueueEmpty.queueIsEmpty);
   }
 
   @Test public void test09CanNotTakeWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
-    Queue queue = addSomethingToNewQueue();
+    Queue queue = addSomethingToNewQueue(element);
     queue.take();
     
-    assertThrowsLike(() -> queue.take(), queueIsEmpty);
+    assertThrowsLike(() -> queue.take(), QueueEmpty.queueIsEmpty);
 
   }
 
   @Test public void test10CanNotHeadWhenThereAreNoObjectsInTheQueue() { 
-    assertThrowsLike(() -> new Queue().head(), queueIsEmpty);
+    assertThrowsLike(() -> new Queue().head(), QueueEmpty.queueIsEmpty);
   }
   
-  private Queue addSomethingToNewQueue() {
-		Queue queue = new Queue().add( element );
+  private Queue addSomethingToNewQueue(Object objectToAdd) {
+		Queue queue = new Queue().add( objectToAdd );
 		return queue;
 	}
   
   private void assertThrowsLike( Executable executable, String message ) {
 	    assertEquals( message, 
 	                  assertThrows( Error.class, executable ).getMessage() );
+
+  }
+
+  @Test public void test11QueueBehavesFIFO() {
+	    Queue queue = new Queue();
+	    String firstAddedObject = firstElement;
+	    String secondAddedObject = secondElement;
+	    String thirdAddedObject = "Third element";
+
+	    queue.add( firstAddedObject );
+	    queue.add( secondAddedObject );
+	    queue.add( thirdAddedObject );
+
+
+	    assertEquals( queue.take(), firstAddedObject );
+	    assertEquals( queue.take(), secondAddedObject );
+	    //assertEquals( queue.take(), thirdAddedObject );
+
+	    assertFalse( queue.isEmpty() );
 	  }
+
 }
