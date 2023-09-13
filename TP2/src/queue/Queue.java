@@ -1,31 +1,35 @@
+
 package queue;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Queue {
 
-    private List<Object> fila = new ArrayList<>();
+    private QueueElement queueElement;
+
+    public Queue() {
+        queueElement = new QueueEmpty();
+    }
 
     public boolean isEmpty() {
-        return fila.isEmpty();
+        return queueElement.isEmpty();
     }
 
     public Queue add(Object cargo) {
-        fila.add(cargo);
+        queueElement = queueElement.add(cargo);
         return this;
     }
 
     public Object take() {
-        assert !fila.isEmpty() : "Queue is empty";
-        return fila.remove(0);
+        if (isEmpty()) throw new Error("Queue is empty");
+        Object removed = queueElement.head();
+        queueElement = queueElement.take();
+        return removed;
     }
 
     public Object head() {
-        assert !fila.isEmpty() : "Queue is empty";
-        return fila.get(0);
+        return queueElement.head();
     }
 
     public int size() {
-        return fila.size();
+        return queueElement.size();
     }
 }
