@@ -1,6 +1,7 @@
 package queue;
 
 public class QueueEmpty extends QueueElement {
+	
 	public static String queueIsEmpty = "Queue is empty";
 
     public boolean isEmpty() {
@@ -8,7 +9,7 @@ public class QueueEmpty extends QueueElement {
     }
 
     public Object head() {
-        throw new Error(queueIsEmpty);
+        throw new RuntimeException(queueIsEmpty);
     }
 
     public QueueElement add(Object cargo) {
@@ -16,7 +17,7 @@ public class QueueEmpty extends QueueElement {
     }
 
     public QueueElement take() {
-        throw new Error(queueIsEmpty);
+        throw new RuntimeException(queueIsEmpty);
     }
 
     public int size() {

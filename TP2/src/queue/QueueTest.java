@@ -33,8 +33,7 @@ private static String firstElement = "First";
   }
 
   @Test public void test05TakeReturnsLastAddedObject() {
-    Queue queue = addSomethingToNewQueue(element);
-    assertEquals( element, queue.take() );
+    assertEquals( element, addSomethingToNewQueue(element).take() );
   }
 
   @Test public void test06QueueBehavesFIFO() {
@@ -83,27 +82,6 @@ private static String firstElement = "First";
 	}
   
   private void assertThrowsLike( Executable executable, String message ) {
-	    assertEquals( message, 
-	                  assertThrows( Error.class, executable ).getMessage() );
-
+	    assertEquals( message, assertThrows( RuntimeException.class, executable ).getMessage() );
   }
-
-  @Test public void test11QueueBehavesFIFO() {
-	    Queue queue = new Queue();
-	    String firstAddedObject = firstElement;
-	    String secondAddedObject = secondElement;
-	    String thirdAddedObject = "Third element";
-
-	    queue.add( firstAddedObject );
-	    queue.add( secondAddedObject );
-	    queue.add( thirdAddedObject );
-
-
-	    assertEquals( queue.take(), firstAddedObject );
-	    assertEquals( queue.take(), secondAddedObject );
-	    //assertEquals( queue.take(), thirdAddedObject );
-
-	    assertFalse( queue.isEmpty() );
-	  }
-
 }
