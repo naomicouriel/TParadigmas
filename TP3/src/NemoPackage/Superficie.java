@@ -18,7 +18,7 @@ import NemoPackage.OficialDeProfundidad.Nivel;
    }
    
    public void releaseCapsule() {
-   	Nemo.capsuleIsLiberated = true;
+   	Nemo.chocolateCapsuleIsReleased = true;
    }
 	
 }

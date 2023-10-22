@@ -24,7 +24,7 @@ class NivelMayorAUno extends Nivel{
     }
 
     public void releaseCapsule() {
-    	Nemo.capsuleIsLiberated = false;
+    	Nemo.chocolateCapsuleIsReleased = false;
     	throw new RuntimeException(Nemo.CannotReleaseCapsuleInDeeperLevels);
     }
 	

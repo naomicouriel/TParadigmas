@@ -7,12 +7,12 @@ public class Nemo {
     private OficialDeProfundidad profundidad = new Superficie();
     private Direccion direccion;
     private Posicion posicion;
-    static boolean capsuleIsLiberated;
+    static boolean chocolateCapsuleIsReleased;
     
     public Nemo(Posicion posicion, Direccion direccion) {
         this.direccion = direccion;
         this.posicion = posicion;
-        capsuleIsLiberated = false;
+        chocolateCapsuleIsReleased = false;
     }
 
     public int getPositionX() {
@@ -63,11 +63,6 @@ public class Nemo {
 	public void releaseCapsule() {
 		profundidad.releaseCapsule();	
 	}
-	
-	
-	
-	
-	
     
 }
 

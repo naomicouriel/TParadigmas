@@ -61,7 +61,7 @@ public class NemoTest {
 		Nemo nemo = newNemoAtOriginFacingSouth();
 		
 		nemo.move("m");
-		assertTrue(Nemo.capsuleIsLiberated);
+		assertTrue(Nemo.chocolateCapsuleIsReleased);
 	}
 	
 	@Test public void test08DoesNotFailWhenGoingDownTooMuch() {
@@ -136,7 +136,6 @@ public class NemoTest {
 		assertEquals("South", nemo.getDirection());
 	}
 	
-	
 	@Test public void test16RotatesLeftAsMuchAsAsked(){
 		Nemo nemo = newNemoAtOriginFacingSouth();
 		
@@ -158,21 +157,21 @@ public class NemoTest {
 		assertEquals( Nemo.CannotReleaseCapsuleInDeeperLevels,
 				  assertThrows( RuntimeException.class, () -> nemo.move("m") ).getMessage() );
 		
-		assertFalse(Nemo.capsuleIsLiberated);
+		assertFalse(Nemo.chocolateCapsuleIsReleased);
 	}
 	
 	@Test public void test19CapsuleReleasesWhenNemoIsOnSurface() {
 		Nemo nemo = newNemoAtOriginFacingSouth();
 		nemo.move("m");
 		
-		assertTrue(Nemo.capsuleIsLiberated);
+		assertTrue(Nemo.chocolateCapsuleIsReleased);
 	}
 	
 	@Test public void test20CapsuleReleasesWhenNemoIsOnLevelOne() {
 		Nemo nemo = newNemoAtOriginFacingSouth();
 		nemo.move("dm");
 		
-		assertTrue(Nemo.capsuleIsLiberated);
+		assertTrue(Nemo.chocolateCapsuleIsReleased);
 	}
 	
 	@Test public void test21NemoRotatesLeftAndGoesForward() {
@@ -195,7 +194,7 @@ public class NemoTest {
 		Nemo nemo = new Nemo(posicion, direccion);
 		nemo.move("rm");
 		assertEquals( "North", nemo.getDirection());
-		assertTrue(Nemo.capsuleIsLiberated);
+		assertTrue(Nemo.chocolateCapsuleIsReleased);
 	}
 	
 	@Test public void test24CapsuleCanBeReleasedMultipleTimes() {
@@ -205,10 +204,10 @@ public class NemoTest {
 		Nemo nemo = new Nemo(posicion, direccion);
 
 		nemo.move("mmmm");
-		assertTrue(Nemo.capsuleIsLiberated);
+		assertTrue(Nemo.chocolateCapsuleIsReleased);
 	}
 	
-	@Test public void test25NemoCanBeInitializedInAPositionDifferentThanTheOrigin() {
+	@Test public void test25CanBeInitializedInAPositionDifferentThanTheOrigin() {
 		Posicion posicion = new Posicion(8, 4);
 		Direccion direccion = new East();
 		
@@ -227,7 +226,19 @@ public class NemoTest {
 		assertEquals(1, nemo.getDepth());
 		assertEquals(9, nemo.getPositionY());
 		assertEquals("South", nemo.getDirection());
-		assertTrue(Nemo.capsuleIsLiberated);
+		assertTrue(Nemo.chocolateCapsuleIsReleased);
+	}
+	
+	@Test public void test27PositionAfterComplexSequence() {
+	    Nemo nemo = newNemoAtOriginFacingSouth();
+	    
+	    nemo.move("ffrdrurummmlllldfmmffr");
+
+	    assertEquals(1, nemo.getDepth());
+	    assertEquals(2, nemo.getPositionX());
+	    assertEquals(3, nemo.getPositionY());
+	    assertEquals("South", nemo.getDirection());
+	    assertTrue(Nemo.chocolateCapsuleIsReleased);
 	}
 	
 	private Nemo newNemoAtOriginFacingSouth() {
