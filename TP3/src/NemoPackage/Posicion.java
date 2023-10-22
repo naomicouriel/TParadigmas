@@ -1,6 +1,6 @@
 package NemoPackage;
 
-public class Posicion extends Nemo2 {
+public class Posicion {
 	
 	private int coordX;
 	private int coordY;
@@ -20,10 +20,4 @@ public class Posicion extends Nemo2 {
 	public static Posicion addCoordinates(Posicion pos, int newCoordX, int newCoordY ) {
 		return new Posicion(pos.coordX + newCoordX, pos.coordY + newCoordY);
 	}
-	/*
-	public Posicion procesarComando(String command) {
-		coordX +=1;
-		return new Posicion(coordX, this.coordY);
-	}*/
-
 }
