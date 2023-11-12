@@ -1,63 +1,45 @@
 package linea;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+
 public class Linea {
+	
+	public static String CannotPlayAtThisPosition = "Esa posición no existe";
+	public static String ItIsNotYourTurn = "No es tu turno";
+	public static String GameIsOver = "El juego terminó";
 
-    protected char[][] board;
-    protected char winVariant;
-    protected int height;
-    protected int base;
-    protected int currentPlayer;
-
-    public Linea(int base, int height, char winVariant) {
+	private List<List> tablero = new ArrayList<List>();
+    private int base;
+    private int altura;
+    private Estrategia estrategia = new EstrategiaB();
+    private Estado estado = new JuegaRojo(this);
+    
+    public Linea(int base, int altura, char modoDeJuego) {
         this.base = base;
-        this.height = height;
-        this.winVariant = winVariant;
-        this.board = new char[height][base];
+        this.altura = altura;
+        estrategia = estrategia.estrategiaWith(modoDeJuego);
         initializeBoard();
-        currentPlayer = 1;
     }
 
     private void initializeBoard() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < base; j++) {
-                board[i][j] = '-';
-            }
-        }
+        tablero = IntStream.range(0, altura)
+                .mapToObj(i -> IntStream.range(1, base + 1) 
+                        .mapToObj(j -> "-")
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList());
     }
 
-    public boolean playRedAt(int column) {
-        return playAt(column, 'R');
-    }
-
-    public boolean playBlueAt(int column) {
-        return playAt(column, 'B');
-    }
-
-    private boolean playAt(int column, char player) {
-        if (column < 0 || column >= base) {
-            return false;
-        }
-
-        for (int i = height - 1; i >= 0; i--) {
-            if (board[i][column] == '-') {
-                board[i][column] = player;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean finished() {
-        return checkHorizontal() || checkVertical() || checkDiagonal();
-    }
 
     public String show() {
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < base; j++) {
-                result.append(board[i][j]).append(" ");
+        for (int i = 0; i < altura; i++) {
+            List<String> fila = tablero.get(i);
+            for (int j = 1; j <= base; j++) {
+                result.append(fila.get(j - 1)).append(" ");
             }
             result.append("\n");
         }
@@ -65,51 +47,112 @@ public class Linea {
         return result.toString();
     }
 
-    protected boolean checkHorizontal() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j <= base - 4; j++) {
-                if (board[i][j] != '-' &&
-                    board[i][j] == board[i][j + 1] &&
-                    board[i][j] == board[i][j + 2] &&
-                    board[i][j] == board[i][j + 3]) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public boolean finished() {
+        return estrategia.checkWin(this) || empate();
     }
 
-    protected boolean checkVertical() {
-        for (int i = 0; i <= height - 4; i++) {
-            for (int j = 0; j < base; j++) {
-                if (board[i][j] != '-' &&
-                    board[i][j] == board[i + 1][j] &&
-                    board[i][j] == board[i + 2][j] &&
-                    board[i][j] == board[i + 3][j]) {
-                    return true;
-                }
-            }
-        }
-        return false;
+	public void playBlueAt(int col) {
+    if(checkDimensiones(col)) {
+    	estado = estado.playAzul(col);
+    }
+    else {
+    	throw new RuntimeException(CannotPlayAtThisPosition);
+    }
     }
 
-    protected boolean checkDiagonal() {
-        for (int i = 0; i <= height - 4; i++) {
-            for (int j = 0; j <= base - 4; j++) {
-                if (board[i][j] != '-' &&
-                    (board[i][j] == board[i + 1][j + 1] &&
-                    board[i][j] == board[i + 2][j + 2] &&
-                    board[i][j] == board[i + 3][j + 3])) {
-                    return true;
-                }
-                if (board[i][j + 3] != '-' &&
-                    (board[i][j + 3] == board[i + 1][j + 2] &&
-                    board[i][j + 3] == board[i + 2][j + 1] &&
-                    board[i][j + 3] == board[i + 3][j])) {
-                    return true;
-                }
-            }
-        }
-        return false;
+	public void playRedAt(int col) {
+	    if(checkDimensiones(col)) {
+	    estado = estado.playRojo(col);
+	    }
+	    else {
+	    	throw new RuntimeException(CannotPlayAtThisPosition);
+	    }
+	    
     }
+
+	public void playAt(int column, char player) {
+	    for (int i = altura - 1; i >= 0; i--) {
+	        List<String> fila = tablero.get(i);
+	        if (fila.get(column - 1).equals("-")) {
+	            fila.set(column - 1, String.valueOf(player));
+	            break;
+	        }
+	    }
+	}
+
+	public char getEstrategia() {
+		return estrategia.getKey();
+	}
+
+    private boolean checkDimensiones(int columna) {
+    	return columna >= 0 && columna <= base;
+	}
+    
+    protected boolean checkWinHorizontal() {
+    	boolean hasWinner = tablero.stream()
+                .anyMatch(fila -> IntStream.range(0, base - 3)
+                        .anyMatch(j -> !fila.get(j).equals("-") &&
+                                fila.get(j).equals(fila.get(j + 1)) &&
+                                fila.get(j).equals(fila.get(j + 2)) &&
+                                fila.get(j).equals(fila.get(j + 3))));
+    	if (hasWinner) {
+            whoWon();
+            estado = new JuegoTerminado(this);
+        }
+        return hasWinner;
+    }
+
+    protected boolean checkWinVertical() {
+         boolean hasWinner = IntStream.range(0, base)
+                .anyMatch(j -> IntStream.range(0, altura - 3)
+                        .anyMatch(i -> !tablero.get(i).get(j).equals("-") &&
+                                tablero.get(i).get(j).equals(tablero.get(i + 1).get(j)) &&
+                                tablero.get(i).get(j).equals(tablero.get(i + 2).get(j)) &&
+                                tablero.get(i).get(j).equals(tablero.get(i + 3).get(j))));
+         if (hasWinner) {
+             whoWon();
+             estado = new JuegoTerminado(this);
+         }
+         return hasWinner;
+    }
+    
+    protected boolean checkWinDiagonal() {
+        boolean hasWinner = IntStream.range(0, altura - 3)
+                .anyMatch(i -> IntStream.range(0, base)
+                        .anyMatch(j -> !tablero.get(i).get(j).equals("-") &&
+                                ((j + 3 < base &&
+                                        tablero.get(i).get(j).equals(tablero.get(i + 1).get(j + 1)) &&
+                                        tablero.get(i).get(j).equals(tablero.get(i + 2).get(j + 2)) &&
+                                        tablero.get(i).get(j).equals(tablero.get(i + 3).get(j + 3))) ||
+                                 (j - 3 >= 0 &&
+                                        tablero.get(i).get(j).equals(tablero.get(i + 1).get(j - 1)) &&
+                                        tablero.get(i).get(j).equals(tablero.get(i + 2).get(j - 2)) &&
+                                        tablero.get(i).get(j).equals(tablero.get(i + 3).get(j - 3))))));
+        if (hasWinner) {
+            whoWon();
+            estado = new JuegoTerminado(this);
+        }
+        return hasWinner;
+    }
+
+    public String whoWon() {
+    	String ganador = "Ganador: " + estado.getLastPlayer();
+    	System.out.println(ganador);
+    	return ganador;
+	}
+ 
+    public boolean empate() {
+        boolean isTie = tablero.stream()
+                .flatMap(List::stream)
+                .noneMatch(cuadrado -> cuadrado.equals("-"));
+
+        if (isTie) {
+            System.out.println("Es un empate");
+            estado = new JuegoTerminado(this);
+        }
+
+        return isTie;
+    }
+
+
 }
