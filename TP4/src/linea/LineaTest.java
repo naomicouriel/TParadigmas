@@ -106,17 +106,7 @@ public class LineaTest {
     @Test
     public void testRedWinsRightDiagonalInStrategyB() {
         Linea linea = new Linea(4, 4, 'B');
-        linea.playRedAt(4);
-        linea.playBlueAt(3);
-        linea.playRedAt(3);
-        linea.playBlueAt(2);
-        linea.playRedAt(4);
-        linea.playBlueAt(2);
-        linea.playRedAt(2);
-        linea.playBlueAt(1);
-        linea.playRedAt(1);
-        linea.playBlueAt(1);
-        linea.playRedAt(1);
+        redWinsRightDiagonal(linea);
         assertEquals(linea.whoWon(), "Ganador: Rojo");
         assertTrue(linea.finished());
     }
@@ -130,9 +120,33 @@ public class LineaTest {
     }
     
     @Test
+    public void testDiagonalWinInStrategyC() {
+        Linea linea = new Linea(4, 4, 'C');
+        redWinsRightDiagonal(linea);
+        assertEquals(linea.whoWon(), "Ganador: Rojo");
+        assertTrue(linea.finished());
+    }
+    
+    @Test
+    public void testVerticalWinInStrategyC() {
+        Linea linea = new Linea(4, 4, 'C');
+        redWinsVertical(linea);
+        assertEquals(linea.whoWon(), "Ganador: Rojo");
+        assertTrue(linea.finished());
+    }
+    
+    @Test
+    public void testHorizontalWinInStrategyC() {
+        Linea linea = new Linea(4, 4, 'C');
+        blueWinsHorizontal(linea);
+        assertEquals(linea.whoWon(), "Ganador: Azul");
+        assertTrue(linea.finished());
+    }
+    
+    @Test
     public void canNotPlayAfterGameIsFinishedAndPlayerWon() {
         Linea linea = newLinea4x4WithStrategyA();
-        redWins(linea);
+        redWinsVertical(linea);
         assertTrue(linea.finished());
 		assertThrowsLike(() -> linea.playBlueAt(1), Linea.GameIsOver);
     }
@@ -144,7 +158,36 @@ public class LineaTest {
       assertTrue(linea.empate());
 	  assertThrowsLike(() -> linea.playBlueAt(1), Linea.GameIsOver);
    }
-
+   
+   @Test
+   public void diagonalDoesNotWinInStrategyA() {
+	   Linea linea = newLinea4x4WithStrategyA();
+	   redWinsRightDiagonal(linea);
+	   assertFalse(linea.finished());
+   }
+   
+   @Test
+   public void verticalDoesNotWinInStrategyB() {
+       Linea linea = new Linea(4, 4, 'B');
+       redWinsVertical(linea);
+	   assertFalse(linea.finished());
+   }
+   
+   @Test
+   public void HorizontalDoesNotWinInStrategyB() {
+       Linea linea = new Linea(4, 4, 'B');
+       blueWinsHorizontal(linea);
+	   assertFalse(linea.finished());
+   }
+   
+   @Test
+   public void gameNotFinished() {
+       Linea linea = new Linea(4, 4, 'A');
+       linea.playRedAt(1);
+       linea.playBlueAt(1);
+	   assertFalse(linea.finished());
+   }
+   
   private Linea newLinea4x4WithStrategyA() {
 	Linea linea = new Linea(4, 4, 'A');
 	return linea;
@@ -176,6 +219,20 @@ public class LineaTest {
         linea.playBlueAt(2);
         linea.playRedAt(1);
         linea.playBlueAt(2);
+        linea.playRedAt(1);
+	}
+	
+	private void redWinsRightDiagonal(Linea linea) {
+		linea.playRedAt(4);
+        linea.playBlueAt(3);
+        linea.playRedAt(3);
+        linea.playBlueAt(2);
+        linea.playRedAt(4);
+        linea.playBlueAt(2);
+        linea.playRedAt(2);
+        linea.playBlueAt(1);
+        linea.playRedAt(1);
+        linea.playBlueAt(1);
         linea.playRedAt(1);
 	}
 	
