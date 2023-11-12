@@ -85,7 +85,7 @@ public class Linea {
 	}
 
     private boolean checkDimensiones(int columna) {
-    	return columna >= 0 && columna <= base;
+    	return columna > 0 && columna <= base;
 	}
     
     protected boolean checkWinHorizontal() {
